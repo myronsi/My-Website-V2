@@ -12,8 +12,7 @@ const TECH_ICONS = {
   Express: Cpu,
   Python: Code,
   Javascript: Code,
-  HTML: Code,
-  CSS: Code,
+  'HTML & CSS': Code,
   default: Package,
 };
 
@@ -253,7 +252,7 @@ const ProjectDetails = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes blob {
           0% {
             transform: translate(0px, 0px) scale(1);

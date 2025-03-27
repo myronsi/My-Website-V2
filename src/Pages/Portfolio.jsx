@@ -13,7 +13,6 @@ import CardProject from "../components/CardProject";
 import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Certificate from "../components/Certificate";
 import { Code, Award, Boxes } from "lucide-react";
 
 // Separate ShowMore/ShowLess button component
@@ -80,7 +79,7 @@ function TabPanel({ children, value, index, ...other }) {
     >
       {value === index && (
         <Box sx={{ p: { xs: 1, sm: 3 } }}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -101,7 +100,9 @@ function a11yProps(index) {
 }
 
 const techStacks = [
-  { icon: "c.svg", language: "C++" },
+  { icon: "assembly.svg", language: "Assembly" },
+  { icon: "c.svg", language: "C" },
+  { icon: "cpp.svg", language: "C++" },
   { icon: "python.svg", language: "Python" },
   { icon: "java.svg", language: "Java" },
   { icon: "html.svg", language: "HTML" },
@@ -112,19 +113,16 @@ const techStacks = [
   { icon: "visual-studio-code.svg", language: "VS Code" },
   { icon: "tailwind.svg", language: "Tailwind CSS" },
   { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "nodejs.svg", language: "Node JS" },
+  { icon: "typescript.svg", language: "TypeScript" },
   { icon: "npm.svg", language: "NPM" },
-  { icon: "bootstrap.svg", language: "Bootstrap" },
-  { icon: "firebase.svg", language: "Firebase" },
+  { icon: "mysql.svg", language: "MySQL" },
 ];
 
 export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
-  const [certificates, setCertificates] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
@@ -138,11 +136,9 @@ export default function FullWidthTabs() {
   const fetchData = useCallback(async () => {
     try {
       const projectCollection = collection(db, "projects");
-      const certificateCollection = collection(db, "certificates");
 
-      const [projectSnapshot, certificateSnapshot] = await Promise.all([
+      const [projectSnapshot] = await Promise.all([
         getDocs(projectCollection),
-        getDocs(certificateCollection),
       ]);
 
       const projectData = projectSnapshot.docs.map((doc) => ({
@@ -151,14 +147,11 @@ export default function FullWidthTabs() {
         TechStack: doc.data().TechStack || [],
       }));
 
-      const certificateData = certificateSnapshot.docs.map((doc) => doc.data());
 
       setProjects(projectData);
-      setCertificates(certificateData);
 
       // Store in localStorage
       localStorage.setItem("projects", JSON.stringify(projectData));
-      localStorage.setItem("certificates", JSON.stringify(certificateData));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -175,13 +168,10 @@ export default function FullWidthTabs() {
   const toggleShowMore = useCallback((type) => {
     if (type === 'projects') {
       setShowAllProjects(prev => !prev);
-    } else {
-      setShowAllCertificates(prev => !prev);
     }
   }, []);
 
   const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
-  const displayedCertificates = showAllCertificates ? certificates : certificates.slice(0, initialItems);
 
   return (
     <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portfolio">
@@ -199,7 +189,7 @@ export default function FullWidthTabs() {
           </span>
         </h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
-          Explore my journey through projects, certifications, and technical expertise. 
+          Explore my journey through projects, and technical expertise. 
           Each section represents a milestone in my continuous learning path.
         </p>
       </div>
@@ -280,14 +270,9 @@ export default function FullWidthTabs() {
               {...a11yProps(0)}
             />
             <Tab
-              icon={<Award className="mb-2 w-5 h-5 transition-all duration-300" />}
-              label="Certificates"
-              {...a11yProps(1)}
-            />
-            <Tab
               icon={<Boxes className="mb-2 w-5 h-5 transition-all duration-300" />}
               label="Tech Stack"
-              {...a11yProps(2)}
+              {...a11yProps(1)}
             />
           </Tabs>
         </AppBar>
@@ -328,30 +313,6 @@ export default function FullWidthTabs() {
           </TabPanel>
 
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <div className="container mx-auto flex justify-center items-center overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5 gap-4">
-                {displayedCertificates.map((certificate, index) => (
-                  <div
-                    key={index}
-                    data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
-                    data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
-                  >
-                    <Certificate ImgSertif={certificate.Img} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            {certificates.length > initialItems && (
-              <div className="mt-6 w-full flex justify-start">
-                <ToggleButton
-                  onClick={() => toggleShowMore('certificates')}
-                  isShowingMore={showAllCertificates}
-                />
-              </div>
-            )}
-          </TabPanel>
-
-          <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
                 {techStacks.map((stack, index) => (

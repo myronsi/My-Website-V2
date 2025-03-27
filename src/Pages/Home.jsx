@@ -63,11 +63,11 @@ const TYPING_SPEED = 100;
 const ERASING_SPEED = 50;
 const PAUSE_DURATION = 2000;
 const WORDS = ["Responsible", "Enthusiast", "Skilled"];
-const TECH_STACK = ["Git", "C++", "Python", "Java", "Javascript", "React", "Node.js", "Tailwind"];
+const TECH_STACK = ["C", "Python", "Java", "Javascript"];
 const SOCIAL_LINKS = [
   { icon: Github, link: "https://github.com/myronsi" },
   { icon: Linkedin, link: "https://www.linkedin.com/in/myron-ilchenko" },
-  { icon: Instagram, link: "https://www.instagram.com/myronsi_/?hl=id" }
+  { icon: Instagram, link: "https://www.instagram.com/myronsi_?igsh=Nm16c2hubzQwNzRy" }
 ];
 
 const Home = () => {
@@ -127,21 +127,17 @@ const Home = () => {
   }, [handleTyping]);
 
   // Lottie configuration
-  const lottieOptions = {
-    src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
-    loop: true,
-    autoplay: true,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-      progressiveLoad: true,
-    },
-    style: { width: "100%", height: "100%" },
-    className: `w-full h-full transition-all duration-500 ${
-      isHovering 
-        ? "scale-[180%] sm:scale-[160%] md:scale-[150%] lg:scale-[145%] rotate-2" 
-        : "scale-[175%] sm:scale-[155%] md:scale-[145%] lg:scale-[140%]"
-    }`
-  };
+const lottieOptions = {
+  src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
+  loop: true,
+  autoplay: true,
+  style: { width: "100%", height: "100%" },
+  className: `w-full h-full transition-all duration-500 ${
+    isHovering 
+      ? "scale-[180%] sm:scale-[160%] md:scale-[150%] lg:scale-[145%]" 
+      : "scale-[175%] sm:scale-[155%] md:scale-[145%] lg:scale-[140%]"
+  }`
+};
 
   return (
     <div className="min-h-screen bg-[#030014] overflow-hidden" id="Home">

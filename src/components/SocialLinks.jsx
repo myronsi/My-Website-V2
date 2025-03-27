@@ -24,7 +24,7 @@ const socialLinks = [
     displayName: "Instagram",
     subText: "myronsi_",
     icon: Instagram,
-    url: "https://www.instagram.com/myronsi_/?hl=id",
+    url: "https://www.instagram.com/myronsi_?igsh=Nm16c2hubzQwNzRy",
     color: "#E4405F",
     gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]"
   },

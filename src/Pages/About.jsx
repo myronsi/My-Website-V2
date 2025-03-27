@@ -20,9 +20,6 @@ const Header = memo(() => (
       data-aos="zoom-in-up"
       data-aos-duration="800"
     >
-      <Sparkles className="w-5 h-5 text-purple-400" />
-      Transforming ideas into digital experiences
-      <Sparkles className="w-5 h-5 text-purple-400" />
     </p>
   </div>
 ));
@@ -114,9 +111,8 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
 
 const AboutPage = () => {
   // Memoized calculations
-  const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
+  const { totalProjects, YearExperience } = useMemo(() => {
     const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
-    const storedCertificates = JSON.parse(localStorage.getItem("certificates") || "[]");
     
     const startDate = new Date("2023-01-06");
     const today = new Date();
@@ -125,7 +121,6 @@ const AboutPage = () => {
 
     return {
       totalProjects: storedProjects.length,
-      totalCertificates: storedCertificates.length,
       YearExperience: experience
     };
   }, []);
@@ -165,14 +160,6 @@ const AboutPage = () => {
       animation: "fade-right",
     },
     {
-      icon: Award,
-      color: "from-[#a855f7] to-[#6366f1]",
-      value: totalCertificates,
-      label: "Certificates",
-      description: "Professional skills validated",
-      animation: "fade-up",
-    },
-    {
       icon: Globe,
       color: "from-[#6366f1] to-[#a855f7]",
       value: YearExperience,
@@ -180,7 +167,7 @@ const AboutPage = () => {
       description: "Continuous learning journey",
       animation: "fade-left",
     },
-  ], [totalProjects, totalCertificates, YearExperience]);
+  ], [totalProjects, YearExperience]);
 
   return (
     <div
@@ -254,7 +241,7 @@ const AboutPage = () => {
         </a>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-20px); }

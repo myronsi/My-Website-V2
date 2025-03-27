@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
-import { Link } from "react-router-dom";
 import SocialLinks from "../components/SocialLinks";
 import Swal from "sweetalert2";
 import AOS from "aos";
@@ -15,17 +14,12 @@ const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    AOS.init({
-      once: false,
-    });
+    AOS.init({ once: false });
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -36,39 +30,40 @@ const ContactPage = () => {
       title: 'Sending Message...',
       html: 'Please wait while we send your message',
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      didOpen: () => Swal.showLoading(),
     });
 
     try {
-      // Get form data
-      const form = e.target;
-      const formData = new FormData(form);
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('message', formData.message);
+      formDataToSend.append('website', '');
 
-      // Submit form
-      await form.submit();
-
-      // Show success message
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your message has been sent successfully!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2000,
-        timerProgressBar: true
+      const response = await fetch('https://viserix.com/contact-form.php', {
+        method: 'POST',
+        body: formDataToSend,
       });
 
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+      const result = await response.json();
+
+      if (result.success) {
+        Swal.fire({
+          title: 'Success!',
+          text: result.message,
+          icon: 'success',
+          confirmButtonColor: '#6366f1',
+          timer: 2000,
+          timerProgressBar: true
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error(result.message);
+      }
     } catch (error) {
       Swal.fire({
         title: 'Error!',
-        text: 'Something went wrong. Please try again later.',
+        text: error.message || 'Something went wrong',
         icon: 'error',
         confirmButtonColor: '#6366f1'
       });
@@ -78,8 +73,9 @@ const ContactPage = () => {
   };
 
   return (
-    <>
-      <div className="text-center lg:mt-[5%] mt-10 mb-2 sm:px-0 px-[5%]">
+      <div className="min-h-screen flex flex-col items-center justify-center">
+      <div className="text-center lg:mt-[5%] mt-10 mb-2 sm:px-0 px-[5%]"
+      id="Contact">
         <h2
           data-aos="fade-down"
           data-aos-duration="1000"
@@ -88,8 +84,7 @@ const ContactPage = () => {
           <span
             style={{
               color: "#6366f1",
-              backgroundImage:
-                "linear-gradient(45deg, #6366f1 10%, #a855f7 93%)",
+              backgroundImage: "linear-gradient(45deg, #6366f1 10%, #a855f7 93%)",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -106,11 +101,8 @@ const ContactPage = () => {
           Got a question? Send me a message, and I'll get back to you soon.
         </p>
       </div>
-
-      <div
-        className="h-auto py-10 flex items-center justify-center px-[5%] md:px-0"
-        id="Contact"
-      >
+    
+      <div className="w-full py-10 flex items-center justify-center px-[5%] md:px-0">
         <div className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
           <div
             data-aos="fade-right"
@@ -128,7 +120,7 @@ const ContactPage = () => {
               </div>
               <Share2 className="w-10 h-10 text-[#6366f1] opacity-50" />
             </div>
-
+    
             <form 
               action="https://formsubmit.co/myron.ilchenko@gmail.com"
               method="POST"
@@ -138,7 +130,7 @@ const ContactPage = () => {
               {/* FormSubmit Configuration */}
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
-
+    
               <div
                 data-aos="fade-up"
                 data-aos-delay="100"
@@ -200,14 +192,14 @@ const ContactPage = () => {
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
-
+    
             <div className="mt-10 pt-6 border-t border-white/10 flex justify-center space-x-6">
               <SocialLinks />
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
