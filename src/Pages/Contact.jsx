@@ -73,9 +73,8 @@ const ContactPage = () => {
   };
 
   return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-      <div className="text-center lg:mt-[5%] mt-10 mb-2 sm:px-0 px-[5%]"
-      id="Contact">
+    <div className="min-h-screen flex flex-col items-center justify-start" id="Contact">
+      <div className="text-center mt-5 mb-2 sm:px-0 px-[5%]">
         <h2
           data-aos="fade-down"
           data-aos-duration="1000"

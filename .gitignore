@@ -5,5 +5,4 @@
 /postcss.config.js
 /tailwind.config.js
 /vite.config.js
-src/firebase-comment.js
-src/firebase.js
+*.zip
