@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail, ExternalLink, Instagram, Sparkles } from "lucid
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MainTitle = memo(() => (
   <div className="space-y-2 mt-20" data-aos="fade-up" data-aos-delay="600">
@@ -30,21 +31,23 @@ const TechStack = memo(({ tech }) => (
   </div>
 ));
 
-const CTAButton = memo(({ href, text, icon: Icon }) => (
-  <a href={href}>
-    <button className="group relative w-[160px]">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4f52c9] to-[#8644c5] rounded-xl opacity-50 blur-md group-hover:opacity-90 transition-all duration-700"></div>
-      <div className="relative h-11 bg-[#030014] backdrop-blur-xl rounded-lg border border-white/10 leading-none overflow-hidden">
-        <div className="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-gradient-to-r from-[#4f52c9]/20 to-[#8644c5]/20"></div>
-        <span className="absolute inset-0 flex items-center justify-center gap-2 text-sm group-hover:gap-3 transition-all duration-300">
-          <span className="bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent font-medium z-10">
-            {text}
-          </span>
-          <Icon className={`w-4 h-4 text-gray-200 ${text === 'Contact' ? 'group-hover:translate-x-1' : 'group-hover:rotate-45'} transform transition-all duration-300 z-10`} />
+const CTAButton = memo(({ page, text, icon: Icon, onClick }) => (
+  <button onClick={(e) => onClick(e, page)} className="group relative w-[160px]">
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4f52c9] to-[#8644c5] rounded-xl opacity-50 blur-md group-hover:opacity-90 transition-all duration-700"></div>
+    <div className="relative h-11 bg-[#030014] backdrop-blur-xl rounded-lg border border-white/10 leading-none overflow-hidden">
+      <div className="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-gradient-to-r from-[#4f52c9]/20 to-[#8644c5]/20"></div>
+      <span className="absolute inset-0 flex items-center justify-center gap-2 text-sm group-hover:gap-3 transition-all duration-300">
+        <span className="bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent font-medium z-10">
+          {text}
         </span>
-      </div>
-    </button>
-  </a>
+        <Icon
+          className={`w-4 h-4 text-gray-200 ${
+            text === "Contact" ? "group-hover:translate-x-1" : "group-hover:rotate-45"
+          } transform transition-all duration-300 z-10`}
+        />
+      </span>
+    </div>
+  </button>
 ));
 
 const SocialLink = memo(({ icon: Icon, link }) => (
@@ -71,26 +74,24 @@ const SOCIAL_LINKS = [
 ];
 
 const Home = () => {
-  const [text, setText] = useState("")
-  const [isTyping, setIsTyping] = useState(true)
-  const [wordIndex, setWordIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
+  const [text, setText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Optimize AOS initialization
   useEffect(() => {
     const initAOS = () => {
-      AOS.init({
-        once: true,
-        offset: 10,
-       
-      });
+      AOS.init({ once: true, offset: 10 });
     };
-
     initAOS();
-    window.addEventListener('resize', initAOS);
-    return () => window.removeEventListener('resize', initAOS);
+    window.addEventListener("resize", initAOS);
+    return () => window.removeEventListener("resize", initAOS);
   }, []);
 
   useEffect(() => {
@@ -139,6 +140,32 @@ const lottieOptions = {
   }`
 };
 
+const handleNavClick = (e, page) => {
+  e.preventDefault();
+  navigate(`?page=${page}`);
+  setTimeout(() => {
+    const section = document.getElementById(page);
+    if (section) {
+      const yOffset = -80;
+      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }, 100);
+};
+
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const page = params.get("page");
+  if (page) {
+    const section = document.getElementById(page);
+    if (section) {
+      const yOffset = -80;
+      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }
+}, [location.search]);
+
   return (
     <div className="min-h-screen bg-[#030014] overflow-hidden" 
     id="Home">
@@ -168,16 +195,24 @@ const lottieOptions = {
                 </p>
 
                 {/* Tech Stack */}
-                <div className="flex flex-wrap gap-3 justify-start" data-aos="fade-up" data-aos-delay="1200">
+                <div
+                  className="flex flex-wrap gap-3 justify-start"
+                  data-aos="fade-up"
+                  data-aos-delay="1200"
+                >
                   {TECH_STACK.map((tech, index) => (
                     <TechStack key={index} tech={tech} />
                   ))}
                 </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-row gap-3 w-full justify-start" data-aos="fade-up" data-aos-delay="1400">
-                  <CTAButton href="#Portfolio" text="Projects" icon={ExternalLink} />
-                  <CTAButton href="#Contact" text="Contact" icon={Mail} />
+                <div
+                  className="flex flex-row gap-3 w-full justify-start"
+                  data-aos="fade-up"
+                  data-aos-delay="1400"
+                >
+                  <CTAButton page="Portfolio" text="Projects" icon={ExternalLink} onClick={handleNavClick} />
+                  <CTAButton page="Contact" text="Contact" icon={Mail} onClick={handleNavClick} />
                 </div>
 
                 {/* Social Links */}

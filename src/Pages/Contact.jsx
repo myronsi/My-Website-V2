@@ -102,11 +102,11 @@ const ContactPage = () => {
       </div>
     
       <div className="w-full py-10 flex items-center justify-center px-[5%] md:px-0">
-        <div className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
+        <div className="container px-[1%] flex justify-center">
           <div
             data-aos="fade-right"
             data-aos-duration="1200"
-            className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-300 hover:shadow-[#6366f1]/10"
+            className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-300 hover:shadow-[#6366f1]/10 max-w-2xl w-full"
           >
             <div className="flex justify-between items-start mb-8">
               <div>
@@ -126,7 +126,6 @@ const ContactPage = () => {
               onSubmit={handleSubmit}
               className="space-y-6"
             >
-              {/* FormSubmit Configuration */}
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
     

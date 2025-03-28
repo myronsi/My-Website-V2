@@ -4,12 +4,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [bgComplete, setBgComplete] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Определяем разделы для навигации
   const navItems = [
     { page: "Home", label: "Home" },
     { page: "About", label: "About" },
@@ -17,21 +17,22 @@ const Navbar = () => {
     { page: "Contact", label: "Contact" },
   ];
 
-  // Обработка скролла для подсветки активного раздела
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-      const sections = navItems.map((item) => {
-        const section = document.getElementById(item.page);
-        if (section) {
-          return {
-            id: item.page,
-            offset: section.offsetTop - 550,
-            height: section.offsetHeight,
-          };
-        }
-        return null;
-      }).filter(Boolean);
+      const sections = navItems
+        .map((item) => {
+          const section = document.getElementById(item.page);
+          if (section) {
+            return {
+              id: item.page,
+              offset: section.offsetTop - 550,
+              height: section.offsetHeight,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
       const currentPosition = window.scrollY;
       const active = sections.find(
@@ -49,12 +50,21 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [navItems]);
 
-  // Блокировка прокрутки при открытом мобильном меню
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
   }, [isOpen]);
 
-  // Обработчик клика — обновляем URL с query-параметром
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        setBgComplete(true);
+      }, 300);
+      return () => clearTimeout(timer);
+    } else {
+      setBgComplete(false);
+    }
+  }, [isOpen]);
+
   const handleNavClick = (e, page) => {
     e.preventDefault();
     navigate(`?page=${page}`);
@@ -73,7 +83,6 @@ const Navbar = () => {
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-[10%]">
         <div className="flex items-center justify-between h-16">
-          {/* Логотип */}
           <div className="flex-shrink-0">
             <a
               href="?page=Home"
@@ -84,7 +93,6 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Десктопная навигация */}
           <div className="hidden md:block">
             <div className="ml-8 flex items-center space-x-8">
               {navItems.map((item) => (
@@ -115,7 +123,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Кнопка мобильного меню */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -133,31 +140,32 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Мобильное меню */}
       <div
-        className={`md:hidden h-2/5 fixed inset-0 bg-[#030014] transition-all duration-300 ease-in-out ${
+        className={`md:hidden fixed inset-0 bg-[#030014] transition-all duration-500 ease-in-out ${
           isOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-[-100%] pointer-events-none"
+            ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+            : "opacity-0 -translate-y-full scale-95 pointer-events-none"
         }`}
-        style={{ top: "64px" }}
+        style={{ top: "64px", height: "40%" }}
       >
         <div className="flex flex-col h-full">
-          <div className="px-4 py-6 space-y-4 flex-1 ">
+          <div className="px-4 py-6 space-y-4 flex-1">
             {navItems.map((item, index) => (
               <a
                 key={item.label}
                 href={`?page=${item.page}`}
                 onClick={(e) => handleNavClick(e, item.page)}
-                className={`block px-4 py-3 text-lg font-medium transition-all duration-300 ease ${
+                className={`block px-4 py-3 text-lg font-medium transition-all duration-500 ease-out transform ${
                   activeSection === item.page
                     ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-semibold"
                     : "text-[#e2d3fd] hover:text-white"
                 }`}
                 style={{
-                  transitionDelay: `${index * 100}ms`,
-                  transform: isOpen ? "translateX(0)" : "translateX(50px)",
-                  opacity: isOpen ? 1 : 0,
+                  transitionDelay: bgComplete ? `${index * 100 + 200}ms` : "0ms",
+                  transform: bgComplete
+                    ? "translateX(0) translateY(0)"
+                    : "translateX(50px) translateY(-10px)",
+                  opacity: bgComplete ? 1 : 0,
                 }}
               >
                 {item.label}

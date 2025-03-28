@@ -99,22 +99,22 @@ function a11yProps(index) {
 }
 
 const techStacks = [
-  { icon: "assembly.svg", language: "Assembly" },
-  { icon: "c.svg", language: "C" },
-  { icon: "cpp.svg", language: "C++" },
-  { icon: "python.svg", language: "Python" },
-  { icon: "java.svg", language: "Java" },
-  { icon: "html.svg", language: "HTML" },
-  { icon: "css.svg", language: "CSS" },
-  { icon: "javascript.svg", language: "JavaScript" },
-  { icon: "git.svg", language: "Git" },
-  { icon: "archlinux.svg", language: "Arch Linux" },
-  { icon: "visual-studio-code.svg", language: "VS Code" },
-  { icon: "tailwind.svg", language: "Tailwind CSS" },
-  { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "typescript.svg", language: "TypeScript" },
-  { icon: "npm.svg", language: "NPM" },
-  { icon: "mysql.svg", language: "MySQL" },
+  { icon: "/icons/assembly.svg", language: "Assembly" },
+  { icon: "/icons/c.svg", language: "C" },
+  { icon: "/icons/cpp.svg", language: "C++" },
+  { icon: "/icons/python.svg", language: "Python" },
+  { icon: "/icons/java.svg", language: "Java" },
+  { icon: "/icons/html.svg", language: "HTML" },
+  { icon: "/icons/css.svg", language: "CSS" },
+  { icon: "/icons/javascript.svg", language: "JavaScript" },
+  { icon: "/icons/git.svg", language: "Git" },
+  { icon: "/icons/archlinux.svg", language: "Arch Linux" },
+  { icon: "/icons/visual-studio-code.svg", language: "VS Code" },
+  { icon: "/icons/tailwind.svg", language: "Tailwind CSS" },
+  { icon: "/icons/reactjs.svg", language: "ReactJS" },
+  { icon: "/icons/typescript.svg", language: "TypeScript" },
+  { icon: "/icons/npm.svg", language: "NPM" },
+  { icon: "/icons/mysql.svg", language: "MySQL" },
 ];
 
 export default function FullWidthTabs() {

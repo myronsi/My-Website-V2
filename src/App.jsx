@@ -1,3 +1,4 @@
+// src/App.tsx
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "./index.css";
@@ -10,6 +11,7 @@ import ContactPage from "./Pages/Contact";
 import ProjectDetails from "./components/ProjectDetail";
 import WelcomeScreen from "./Pages/WelcomeScreen";
 import { AnimatePresence } from "framer-motion";
+import SectionObserver from "./components/SectionObserver";
 
 const LandingPage = ({ showWelcome, setShowWelcome }) => {
   const location = useLocation();
@@ -45,11 +47,20 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
         <>
           <Navbar />
           <AnimatedBackground />
-          {/* Добавляем id и, при желании, класс для отступа */}
-          <Home id="Home" className="scroll-mt-20" />
-          <About id="About" className="scroll-mt-20" />
-          <Portfolio id="Portfolio" className="scroll-mt-20" />
-          <ContactPage id="Contact" className="scroll-mt-20" />
+          <SectionObserver sectionIds={["Home", "About", "Portfolio", "Contact"]} threshold={0.5} />
+
+          <section id="Home" className="scroll-mt-20">
+            <Home />
+          </section>
+          <section id="About" className="scroll-mt-20">
+            <About />
+          </section>
+          <section id="Portfolio" className="scroll-mt-20">
+            <Portfolio />
+          </section>
+          <section id="Contact" className="scroll-mt-20">
+            <ContactPage />
+          </section>
           <footer>
             <center>
               <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
