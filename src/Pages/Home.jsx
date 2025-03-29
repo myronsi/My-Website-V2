@@ -42,7 +42,7 @@ const CTAButton = memo(({ page, text, icon: Icon, onClick }) => (
         </span>
         <Icon
           className={`w-4 h-4 text-gray-200 ${
-            text === "Contact" ? "group-hover:translate-x-1" : "group-hover:rotate-45"
+            text === "Contact" ? "group-hover:translate-x-1" : "group-hover:rotate-0"
           } transform transition-all duration-300 z-10`}
         />
       </span>
@@ -60,6 +60,8 @@ const SocialLink = memo(({ icon: Icon, link }) => (
     </button>
   </a>
 ));
+
+//TODO: убрать все вращения обьектов
 
 // Constants
 const TYPING_SPEED = 100;

@@ -121,7 +121,7 @@ const ContactPage = () => {
             </div>
     
             <form 
-              action="https://formsubmit.co/myron.ilchenko@gmail.com"
+              action="https://viserix.com/contact-form.php"
               method="POST"
               onSubmit={handleSubmit}
               className="space-y-6"

@@ -20,11 +20,12 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
     if (!showWelcome) {
       const params = new URLSearchParams(location.search);
       const page = params.get("page");
-      if (page) {
+      if (page && !page.startsWith("project/")) {
         const section = document.getElementById(page);
         if (section) {
-          const navbarHeight = 80; // настройте под высоту вашего навбара
-          const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+          const navbarHeight = 80;
+          const sectionPosition =
+            section.getBoundingClientRect().top + window.pageYOffset;
           const offsetPosition = sectionPosition - navbarHeight;
           window.scrollTo({
             top: offsetPosition,
@@ -66,14 +67,10 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
               <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
               <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
                 Copyright © 2025{" "}
-                <a href="https://flowbite.com/" className="hover:underline">
+                <a className="hover:underline">
                   Viserix
                 </a>
                 ⠀All rights reserved
-                <br />
-                <a href="https://github.com/EkiZR/Portofolio_V5">
-                  Credits to https://github.com/EkiZR/Portofolio_V5
-                </a>
               </span>
             </center>
           </footer>
@@ -83,23 +80,17 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
   );
 };
 
-const ProjectPageLayout = () => (
-  <>
-    <ProjectDetails />
-    <footer>
-      <center>
-        <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
-        <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-          Copyright © 2025{" "}
-          <a href="https://flowbite.com/" className="hover:underline">
-            Viserix
-          </a>
-          ⠀All rights reserved
-        </span>
-      </center>
-    </footer>
-  </>
-);
+const AppRoutes = ({ showWelcome, setShowWelcome }) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const page = params.get("page");
+
+  if (page && page.startsWith("project/")) {
+    const id = page.split("/")[1];
+    return <ProjectDetails id={id} />;
+  }
+  return <LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />;
+};
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -108,12 +99,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
-          element={
-            <LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />
-          }
+          path="*"
+          element={<AppRoutes showWelcome={showWelcome} setShowWelcome={setShowWelcome} />}
         />
-        <Route path="/project/:id" element={<ProjectPageLayout />} />
       </Routes>
     </BrowserRouter>
   );
