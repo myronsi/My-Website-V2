@@ -1,6 +1,11 @@
 import React from 'react';
 
-const TechStackIcon = ({ TechStackIcon, Language }) => {
+interface TechStackIconProps {
+  TechStackIcon: string;
+  Language: string;
+}
+
+const TechStackIcon: React.FC<TechStackIconProps> = ({ TechStackIcon, Language }) => {
   return (
     <div className="group p-6 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl">
       <div className="relative">
@@ -18,4 +23,4 @@ const TechStackIcon = ({ TechStackIcon, Language }) => {
   );
 };
 
-export default TechStackIcon; 
+export default TechStackIcon;

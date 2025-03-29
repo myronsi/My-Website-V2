@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 
-const InputField = ({ field, label, icon: Icon, formData, handleChange }) => {
+interface InputFieldProps {
+  field: string;
+  label: string;
+  icon: React.ComponentType;
+  formData: { [key: string]: string };
+  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+const InputField: React.FC<InputFieldProps> = ({ 
+  field, 
+  label, 
+  icon: Icon, 
+  formData, 
+  handleChange 
+}) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  // Helper function to generate input classes dynamically
-  const getInputClasses = (isTextArea = false) => {
+  // Типизированная функция для генерации классов
+  const getInputClasses = (isTextArea = false): string => {
     const baseClasses = `
       w-full p-4 rounded-xl bg-white/10 text-white placeholder-transparent 
       focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 
@@ -18,7 +32,7 @@ const InputField = ({ field, label, icon: Icon, formData, handleChange }) => {
     return `${baseClasses} ${hoverFocusClasses} ${isTextArea ? "h-52 pt-12" : "pl-12"}`;
   };
 
-  // Render input or textarea based on the field type
+  // Типизированная функция рендеринга
   const renderInputContent = () => {
     if (field === "message") {
       return (
@@ -54,7 +68,7 @@ const InputField = ({ field, label, icon: Icon, formData, handleChange }) => {
 
   return (
     <div className="relative w-full group">
-      {/* Icon and Label */}
+      {/* Иконка и лейбл */}
       <div className="absolute left-4 top-4 flex items-center space-x-2 text-gray-400 transition-colors group-hover:text-[#6366f1]">
         <Icon className="w-5 h-5" />
         <label
@@ -70,10 +84,10 @@ const InputField = ({ field, label, icon: Icon, formData, handleChange }) => {
         </label>
       </div>
 
-      {/* Input or Textarea */}
+      {/* Поле ввода */}
       {renderInputContent()}
 
-      {/* Focus/Hover Border Effect */}
+      {/* Эффект границы при фокусе */}
       <div
         className={`
           absolute inset-0 border rounded-xl pointer-events-none 

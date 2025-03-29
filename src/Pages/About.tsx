@@ -5,7 +5,16 @@ import "aos/dist/aos.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { projects } from "../data/projectsData";
 
-const Header = memo(() => (
+interface StatCardProps {
+  icon: React.ComponentType;
+  color: string;
+  value: number;
+  label: string;
+  description: string;
+  animation: string;
+}
+
+const Header: React.FC = memo(() => (
   <div className="text-center lg:mb-8 mb-2 px-[5%]">
     <div className="inline-block relative group">
       <h2 
@@ -19,7 +28,7 @@ const Header = memo(() => (
   </div>
 ));
 
-const ProfileImage = memo(() => (
+const ProfileImage: React.FC = memo(() => (
   <div className="flex justify-end items-center sm:p-12 sm:py-0 p-0 py-2">
     <div 
       className="relative group" 
@@ -53,7 +62,14 @@ const ProfileImage = memo(() => (
   </div>
 ));
 
-const StatCard = memo(({ icon: Icon, color, value, label, description, animation }) => (
+const StatCard: React.FC<StatCardProps> = memo(({ 
+  icon: Icon, 
+  color, 
+  value, 
+  label, 
+  description, 
+  animation 
+}) => (
   <div data-aos={animation} data-aos-duration={1300} className="relative group">
     <div className="relative z-10 bg-gray-900/50 backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
       <div className={`absolute -z-10 inset-0 bg-gradient-to-br ${color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}></div>
@@ -95,7 +111,7 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
   </div>
 ));
 
-const AboutPage = () => {
+const AboutPage: React.FC = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -117,7 +133,7 @@ const AboutPage = () => {
       AOS.init({ once: false });
     };
     initAOS();
-    let resizeTimer;
+    let resizeTimer: any;
     const handleResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(initAOS, 250);
@@ -130,7 +146,7 @@ const AboutPage = () => {
   }, []);
 
   const handleNavClick = useCallback(
-    (e, page) => {
+    (e: React.MouseEvent<HTMLAnchorElement>, page: string) => {
       e.preventDefault();
       navigate(`?page=${page}`);
       setTimeout(() => {
@@ -274,6 +290,6 @@ const AboutPage = () => {
       `}</style>
     </div>
   );
-};
+});
 
-export default memo(AboutPage);
+export default AboutPage;

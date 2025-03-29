@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { Eye, ArrowRight, ExternalLink } from 'lucide-react';
 
-const ProjectCardModal = ({ title, description, link }) => {
-  const [isOpen, setIsOpen] = useState(false);
+interface ProjectCardModalProps {
+  title: string;
+  description: string;
+  link: string;
+}
+
+const ProjectCardModal: React.FC<ProjectCardModalProps> = ({ 
+  title, 
+  description, 
+  link 
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -21,7 +31,7 @@ const ProjectCardModal = ({ title, description, link }) => {
         >
           <div
             className="relative w-full max-w-md rounded-lg bg-gray-900 p-6 text-white shadow-lg animate-slide-up sm:p-8"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
             <button
               className="absolute top-4 right-4 rounded-md p-2 hover:bg-gray-800 transition-colors duration-200"

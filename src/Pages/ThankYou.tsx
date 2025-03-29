@@ -2,7 +2,7 @@ import React from "react";
 import { CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const ThankYouPage = () => {
+const ThankYouPage: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">

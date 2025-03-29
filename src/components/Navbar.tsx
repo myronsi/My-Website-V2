@@ -2,15 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+type NavPage = "Home" | "About" | "Portfolio" | "Contact";
+
+interface NavItem {
+  page: NavPage;
+  label: string;
+}
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [bgComplete, setBgComplete] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("Home");
+  const [activeSection, setActiveSection] = useState<NavPage>("Home");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { page: "Home", label: "Home" },
     { page: "About", label: "About" },
     { page: "Portfolio", label: "Portfolio" },
@@ -32,7 +39,9 @@ const Navbar = () => {
           }
           return null;
         })
-        .filter(Boolean);
+        .filter((section): section is { id: NavPage; offset: number; height: number } => 
+          section !== null
+        );
 
       const currentPosition = window.scrollY;
       const active = sections.find(
@@ -65,7 +74,7 @@ const Navbar = () => {
     }
   }, [isOpen]);
 
-  const handleNavClick = (e, page) => {
+  const handleNavClick = (e: React.MouseEvent, page: NavPage) => {
     e.preventDefault();
     navigate(`?page=${page}`);
     setIsOpen(false);

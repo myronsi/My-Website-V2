@@ -1,12 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
 import SocialLinks from "../components/SocialLinks";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const ContactPage = () => {
-  const [formData, setFormData] = useState({
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+}
+
+const ContactPage: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     message: "",
@@ -17,12 +28,14 @@ const ContactPage = () => {
     AOS.init({ once: false });
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -45,7 +58,7 @@ const ContactPage = () => {
         body: formDataToSend,
       });
 
-      const result = await response.json();
+      const result: ApiResponse = await response.json();
 
       if (result.success) {
         Swal.fire({
@@ -63,7 +76,7 @@ const ContactPage = () => {
     } catch (error) {
       Swal.fire({
         title: 'Error!',
-        text: error.message || 'Something went wrong',
+        text: (error as Error).message || 'Something went wrong',
         icon: 'error',
         confirmButtonColor: '#6366f1'
       });

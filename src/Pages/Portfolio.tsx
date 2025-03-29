@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState, useCallback, SyntheticEvent } from "react";
 import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, Theme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -14,14 +13,31 @@ import "aos/dist/aos.css";
 import { Code, Boxes } from "lucide-react";
 import { projects } from "../data/projectsData";
 
-function a11yProps(index) {
+interface ToggleButtonProps {
+  onClick: () => void;
+  isShowingMore: boolean;
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+  dir?: string;
+}
+
+interface TechStackItem {
+  icon: string;
+  language: string;
+}
+
+function a11yProps(index: number) {
   return {
     id: `full-width-tab-${index}`,
     "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
-const ToggleButton = ({ onClick, isShowingMore }) => (
+const ToggleButton: React.FC<ToggleButtonProps> = ({ onClick, isShowingMore }) => (
   <button
     onClick={onClick}
     className="
@@ -77,12 +93,7 @@ const ToggleButton = ({ onClick, isShowingMore }) => (
   </button>
 );
 
-ToggleButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  isShowingMore: PropTypes.bool.isRequired,
-};
-
-function TabPanel({ children, value, index, ...other }) {
+function TabPanel({ children, value, index, ...other }: TabPanelProps) {
   return (
     <div
       role="tabpanel"
@@ -100,13 +111,7 @@ function TabPanel({ children, value, index, ...other }) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-const techStacks = [
+const techStacks: TechStackItem[] = [
   { icon: "/icons/assembly.svg", language: "Assembly" },
   { icon: "/icons/c.svg", language: "C" },
   { icon: "/icons/cpp.svg", language: "C++" },
@@ -125,10 +130,10 @@ const techStacks = [
   { icon: "/icons/mysql.svg", language: "MySQL" },
 ];
 
-export default function Portfolio() {
+const Portfolio: React.FC = () => {
   const theme = useTheme();
-  const [value, setValue] = useState(0);
-  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [value, setValue] = useState<number>(0);
+  const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
@@ -136,7 +141,7 @@ export default function Portfolio() {
     AOS.init({ once: false });
   }, []);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -236,9 +241,9 @@ export default function Portfolio() {
         </AppBar>
 
         <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={value}
-          onChangeIndex={setValue}
+          onChangeIndex={(index: number) => setValue(index)}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
             <div className="container mx-auto flex justify-center items-center overflow-hidden">
@@ -306,4 +311,6 @@ export default function Portfolio() {
       </Box>
     </div>
   );
-}
+};
+
+export default Portfolio;

@@ -1,6 +1,5 @@
-// src/App.tsx
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import "./index.css";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
@@ -13,7 +12,12 @@ import WelcomeScreen from "./Pages/WelcomeScreen";
 import { AnimatePresence } from "framer-motion";
 import SectionObserver from "./components/SectionObserver";
 
-const LandingPage = ({ showWelcome, setShowWelcome }) => {
+interface LandingPageProps {
+  showWelcome: boolean;
+  setShowWelcome: Dispatch<SetStateAction<boolean>>;
+}
+
+const LandingPage: React.FC<LandingPageProps> = ({ showWelcome, setShowWelcome }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -24,8 +28,7 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
         const section = document.getElementById(page);
         if (section) {
           const navbarHeight = 80;
-          const sectionPosition =
-            section.getBoundingClientRect().top + window.pageYOffset;
+          const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
           const offsetPosition = sectionPosition - navbarHeight;
           window.scrollTo({
             top: offsetPosition,
@@ -80,12 +83,17 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
   );
 };
 
-const AppRoutes = ({ showWelcome, setShowWelcome }) => {
+interface AppRoutesProps {
+  showWelcome: boolean;
+  setShowWelcome: Dispatch<SetStateAction<boolean>>;
+}
+
+const AppRoutes: React.FC<AppRoutesProps> = ({ showWelcome, setShowWelcome }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const page = params.get("page");
 
-  if (page && page.startsWith("project/")) {
+  if (page?.startsWith("project/")) {
     const id = page.split("/")[1];
     return <ProjectDetails id={id} />;
   }
@@ -93,7 +101,7 @@ const AppRoutes = ({ showWelcome, setShowWelcome }) => {
 };
 
 function App() {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState<boolean>(true);
 
   return (
     <BrowserRouter>

@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 
-const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
-  const handleView = (e) => {
+interface CardProjectProps {
+  Img: string;
+  Title: string;
+  Description: string;
+  Link?: string;
+  id?: string;
+}
+
+const CardProject: React.FC<CardProjectProps> = ({ 
+  Img, 
+  Title, 
+  Description, 
+  Link: ProjectLink, 
+  id 
+}) => {
+  const handleView = (e: MouseEvent<HTMLAnchorElement>) => {
     if (!ProjectLink) {
       console.log("ProjectLink is empty");
       e.preventDefault();
@@ -11,7 +25,7 @@ const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
     }
   };
   
-  const handleDetails = (e) => {
+  const handleDetails = (e: MouseEvent<HTMLAnchorElement>) => {
     if (!id) {
       console.log("ID is empty");
       e.preventDefault();

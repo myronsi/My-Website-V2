@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingScreen = () => {
+const LoadingScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#030014] flex items-center justify-center">
       <div className="relative">

@@ -20,7 +20,38 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 
-const TECH_ICONS = {
+interface TechIcons {
+  [key: string]: React.ComponentType<any>;
+}
+
+interface TechBadgeProps {
+  tech: string;
+}
+
+interface FeatureItemProps {
+  feature: string;
+}
+
+interface ProjectStatsProps {
+  project: Project;
+}
+
+interface ProjectDetailsProps {
+  id?: string;
+}
+
+interface Project {
+  id: number;
+  Title: string;
+  Description: string;
+  Img: string;
+  Link: string;
+  Github: string;
+  TechStack?: string[];
+  Features?: string[];
+}
+
+const TECH_ICONS: TechIcons = {
   SQLite: Database,
   WebSocket: Network,
   Vite: Server,
@@ -35,7 +66,7 @@ const TECH_ICONS = {
   default: Package,
 };
 
-const TechBadge = ({ tech }) => {
+const TechBadge: React.FC<TechBadgeProps> = ({ tech }) => {
   const Icon = TECH_ICONS[tech] || TECH_ICONS["default"];
   
   return (
@@ -51,7 +82,7 @@ const TechBadge = ({ tech }) => {
   );
 };
 
-const FeatureItem = ({ feature }) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ feature }) => {
   return (
     <li className="group flex items-start space-x-3 p-2.5 md:p-3.5 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10">
       <div className="relative mt-2">
@@ -65,7 +96,7 @@ const FeatureItem = ({ feature }) => {
   );
 };
 
-const ProjectStats = ({ project }) => {
+const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
   const techStackCount = project?.TechStack?.length || 0;
   const featuresCount = project?.Features?.length || 0;
 
@@ -96,7 +127,7 @@ const ProjectStats = ({ project }) => {
   );
 };
 
-const handleGithubClick = (githubLink) => {
+const handleGithubClick = (githubLink: string): boolean => {
   if (githubLink === "Private") {
     Swal.fire({
       icon: "info",
@@ -112,11 +143,11 @@ const handleGithubClick = (githubLink) => {
   return true;
 };
 
-const ProjectDetails = ({ id: propId }) => {
-  const { id: paramId } = useParams();
+const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id: propId }) => {
+  const { id: paramId } = useParams<{ id?: string }>();
   const id = propId || paramId;
   const navigate = useNavigate();
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<Project | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -125,7 +156,7 @@ const ProjectDetails = ({ id: propId }) => {
     const selectedProject = projects.find((p) => String(p.id) === id);
 
     if (selectedProject) {
-      const enhancedProject = {
+      const enhancedProject: Project = {
         ...selectedProject,
         Features: selectedProject.Features || [],
         TechStack: selectedProject.TechStack || [],
