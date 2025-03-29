@@ -12,12 +12,12 @@ interface TechStackProps {
 interface CTAButtonProps {
   page: string;
   text: string;
-  icon: React.ComponentType;
+  icon: React.ComponentType<React.ComponentProps<'svg'>>;
   onClick: (e: MouseEvent<HTMLButtonElement>, page: string) => void;
 }
 
 interface SocialLinkProps {
-  icon: React.ComponentType;
+  icon: React.ComponentType<React.ComponentProps<'svg'>>;
   link: string;
 }
 
@@ -166,7 +166,13 @@ const Home: React.FC = memo(() => {
     }
   }, [location.search]);
 
-  const lottieOptions = {
+  const lottieOptions: {
+    src: string;
+    loop: boolean;
+    autoplay: boolean;
+    style: React.CSSProperties;
+    className: string;
+  } = {
     src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
     loop: true,
     autoplay: true,

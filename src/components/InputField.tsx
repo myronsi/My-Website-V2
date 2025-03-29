@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent } from "react";
 interface InputFieldProps {
   field: string;
   label: string;
-  icon: React.ComponentType;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   formData: { [key: string]: string };
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -17,7 +17,6 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  // Типизированная функция для генерации классов
   const getInputClasses = (isTextArea = false): string => {
     const baseClasses = `
       w-full p-4 rounded-xl bg-white/10 text-white placeholder-transparent 
@@ -32,7 +31,6 @@ const InputField: React.FC<InputFieldProps> = ({
     return `${baseClasses} ${hoverFocusClasses} ${isTextArea ? "h-52 pt-12" : "pl-12"}`;
   };
 
-  // Типизированная функция рендеринга
   const renderInputContent = () => {
     if (field === "message") {
       return (
@@ -68,7 +66,6 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className="relative w-full group">
-      {/* Иконка и лейбл */}
       <div className="absolute left-4 top-4 flex items-center space-x-2 text-gray-400 transition-colors group-hover:text-[#6366f1]">
         <Icon className="w-5 h-5" />
         <label
@@ -84,10 +81,8 @@ const InputField: React.FC<InputFieldProps> = ({
         </label>
       </div>
 
-      {/* Поле ввода */}
       {renderInputContent()}
 
-      {/* Эффект границы при фокусе */}
       <div
         className={`
           absolute inset-0 border rounded-xl pointer-events-none 

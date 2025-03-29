@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { projects } from "../data/projectsData";
 
 interface StatCardProps {
-  icon: React.ComponentType;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   color: string;
   value: number;
   label: string;
@@ -177,7 +177,7 @@ const AboutPage: React.FC = memo(() => {
   const statsData = useMemo(
     () => [
       {
-        icon: Code,
+        icon: Code as React.ComponentType<React.SVGProps<SVGSVGElement>>,
         color: "from-[#6366f1] to-[#a855f7]",
         value: totalProjects,
         label: "Total Projects",
@@ -185,7 +185,7 @@ const AboutPage: React.FC = memo(() => {
         animation: "fade-right",
       },
       {
-        icon: Globe,
+        icon: Globe as React.ComponentType<React.SVGProps<SVGSVGElement>>,
         color: "from-[#6366f1] to-[#a855f7]",
         value: YearExperience,
         label: "Years of Experience",
