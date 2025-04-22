@@ -14,9 +14,9 @@ export const projects = [
       id: "Messanger",
       Title: "Messanger",
       Description: "This web-based messenger enables real-time messaging with a client-server architecture, featuring a web interface and Python-based backend for connections, authentication, and message storage.",
-      Img: "https://viserix.com/pictures/messenger2(1).png",
-      Link: "https://myronsi.github.io/messenger/client/",
-      TechStack: ["Python", "JavaScript", "WebSocket", "HTML & CSS", "SQLite"],
+      Img: "https://viserix.com/pictures/messenger0.3/pic1.png",
+      Link: "https://messenger.viserix.com/",
+      TechStack: ["Python", "TypeScript", "WebSocket", "React", "SQLite"],
       Features: ["Authentication", "Registration", "Deleting Messages", "Editing Messages"],
       Github: "https://github.com/myronsi/messenger"
     },
