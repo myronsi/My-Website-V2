@@ -1,4 +1,4 @@
-name: MainSource
+name: Deploy React Vite to Hostinger
 
 on:
   push:
@@ -14,25 +14,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Your version
+          node-version: '20'  # Match your local Node version (18 or 20 recommended for Vite)
 
       - name: Install dependencies
-        run: npm i --legacy-peer-deps
+        run: npm ci  # Ensures clean install
 
       - name: Build project
-        run: npm run build
+        run: npm run build  # Generates dist folder
+
+      - name: List build output
+        run: ls -la dist  # Debug: Verify dist contents
 
       - name: Deploy build to branch
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b deploy #Create if missing
-          git rm -rf .  # Clear branch
-          git checkout main -- dist  # Copy build folder (adjust 'dist')
+          git checkout -b deploy || git checkout deploy  # Create or switch to deploy
+          git rm -rf --ignore-unmatch .  # Clear branch safely
+          mv dist/* .  # Move dist contents to root
+          rm -rf dist  # Remove empty dist folder
           git add .
-          git commit -m "Deploy build $(date)"
-          git push origin deploy
+          git diff --staged --quiet || git commit -m "Deploy build $(date '+%Y-%m-%d %H:%M:%S')"
+          git push origin deploy -f
 
-      # Trigger Hostinger webhook
       - name: Trigger Hostinger deploy
         run: curl -X POST ${{ secrets.HOSTINGER_WEBHOOK_URL }}
