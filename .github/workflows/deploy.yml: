@@ -1,0 +1,38 @@
+name: MainSource
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Your version
+
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy build to branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b deploy #Create if missing
+          git rm -rf .  # Clear branch
+          git checkout main -- dist  # Copy build folder (adjust 'dist')
+          git add .
+          git commit -m "Deploy build $(date)"
+          git push origin deploy
+
+      # Trigger Hostinger webhook
+      - name: Trigger Hostinger deploy
+        run: curl -X POST ${{ secrets.HOSTINGER_WEBHOOK_URL }}
