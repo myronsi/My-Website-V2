@@ -1,30 +1,3 @@
-name: Deploy React Vite to Hostinger
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'  # Matches recommended engines
-
-      - name: Install dependencies
-        run: npm i --legacy-peer-deps # Clean install, respects package-lock.json
-
-      - name: Build project
-        run: npm run build  # Generates dist folder
-
-      - name: List build output
-        run: ls -la dist  # Debug: Verify dist contents
-
 name: Deploy React Vite to Hostinger via FTP
 
 on:
@@ -62,4 +35,3 @@ jobs:
           local-dir: ./dist
           server-dir: /public_html
           dangerous-clean-slate: true # Clears server-dir before upload
-
