@@ -155,13 +155,6 @@ npm run build
 
 2. Deploy the `dist` folder to your hosting platform
 
-## 📱 Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
 ## 🤝 Contributing
 
 While this is a personal portfolio project, suggestions and feedback are welcome! Feel free to open an issue or reach out directly.
