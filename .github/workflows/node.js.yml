@@ -14,13 +14,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use Node.js 20
+          node-version: '20'
 
       - name: Install dependencies
         run: npm i --legacy-peer-deps
 
       - name: Build project
-        run: npm run build # Generates dist folder
+        run: npm run build
 
       - name: Verify build output
         run: ls -la dist
@@ -31,7 +31,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps # or ftp (Hostinger supports both, recommend ftps)
+          protocol: ftps
           local-dir: ./dist/
           server-dir: /public_html/
-          # dangerous-clean-slate: true # Clears server-dir before upload
