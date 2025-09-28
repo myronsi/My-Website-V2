@@ -33,5 +33,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps # or ftp (Hostinger supports both, recommend ftps)
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: /
           dangerous-clean-slate: true # Clears server-dir before upload
