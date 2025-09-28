@@ -25,19 +25,41 @@ jobs:
       - name: List build output
         run: ls -la dist  # Debug: Verify dist contents
 
-      - name: Deploy build to branch
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b deploy || git checkout deploy  # Create or switch
-          git rm -rf --ignore-unmatch .  # Clear branch
-          mv dist/* .  # Move dist contents to root
-          rm -rf dist  # Remove empty dist folder
-          git add .
-          git diff --staged --quiet || git commit -m "Deploy build $(date '+%Y-%m-%d %H:%M:%S')"
-          git push origin deploy -f
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: Deploy React Vite to Hostinger via FTP
 
-      - name: Trigger Hostinger deploy
-        run: curl -X POST ${{ secrets.HOSTINGER_WEBHOOK_URL }}
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js 20
+
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+
+      - name: Build project
+        run: npm run build # Generates dist folder
+
+      - name: Verify build output
+        run: ls -la dist
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps # or ftp (Hostinger supports both, recommend ftps)
+          local-dir: ./dist
+          server-dir: /public_html
+          dangerous-clean-slate: true # Clears server-dir before upload
+
