@@ -34,9 +34,9 @@ const socialLinks: SocialLink[] = [
   {
     name: "Instagram",
     displayName: "Instagram",
-    subText: "myronsi_",
+    subText: "myron_il",
     icon: Instagram,
-    url: "https://www.instagram.com/myronsi_?igsh=Nm16c2hubzQwNzRy",
+    url: "https://www.instagram.com/myron_il",
     color: "#E4405F",
     gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]"
   },
