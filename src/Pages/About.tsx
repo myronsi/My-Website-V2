@@ -233,7 +233,7 @@ const AboutPage: React.FC = memo(() => {
 
             <div className="flex flex-col lg:flex-row items-center gap-4 w-full">
               <a
-                href="https://drive.google.com/drive/folders/"
+                href="https://drive.google.com/file/d/19SOOybrCgCFeZTIFiQ9k8cTDIX3bSUWU/view?usp=drivesdk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full lg:w-auto"

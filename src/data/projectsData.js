@@ -18,7 +18,7 @@ export const projects = [
       Link: "https://messenger.viserix.com/",
       TechStack: ["Python", "TypeScript", "WebSocket", "React", "SQLite"],
       Features: ["Authentication", "Registration", "Deleting Messages", "Editing Messages"],
-      Github: "https://github.com/myronsi/messenger"
+      Github: "https://github.com/myronsi/messenger-back"
     },
     {
       id: "SCLaufenburg",
@@ -29,7 +29,7 @@ export const projects = [
       TechStack: ["Vite", "React", "Tailwind", "TypeScript", "shadcn-ui"],
       Features: ["Archive page", "Simple UI", "Contact Form"],
       Github: "Private",
-      Mention: "https://www.sc-laufenburg.de/?page=impressum"
+      Mention: "https://www.sc-laufenburg.de/impressum"
     },
     {
       id: "primaakademiemassage",
@@ -38,7 +38,6 @@ export const projects = [
       Img: "https://viserix.com/pictures/primaakademieloerrach.png",
       Link: "https://primaakademieloerrach.de/",
       TechStack: ["HTML & CSS",],
-      Github: "Private",
-      // Mention: "https.jcjnw"
+      Github: "Private"
     },
   ];
