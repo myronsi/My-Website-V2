@@ -112,7 +112,6 @@ function TabPanel({ children, value, index, ...other }: TabPanelProps) {
 }
 
 const techStacks: TechStackItem[] = [
-  { icon: "/icons/assembly.svg", language: "Assembly" },
   { icon: "/icons/c.svg", language: "C" },
   { icon: "/icons/cpp.svg", language: "C++" },
   { icon: "/icons/python.svg", language: "Python" },

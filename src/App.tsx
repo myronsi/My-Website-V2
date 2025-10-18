@@ -39,6 +39,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ showWelcome, setShowWelcome }
     }
   }, [showWelcome, location.search]);
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       <AnimatePresence mode="wait">
@@ -72,7 +74,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showWelcome, setShowWelcome }
             <center>
               <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
               <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-                Copyright © 2025{" "}
+                Copyright © {currentYear}{" "}
                 <a className="hover:underline">Viserix</a> ⠀All rights reserved
               </span>
             </center>
