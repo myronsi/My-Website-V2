@@ -85,7 +85,7 @@ const TECH_STACK: string[] = ["C", "Python", "Java", "Javascript"];
 const SOCIAL_LINKS: SocialLinkProps[] = [
   { icon: Github, link: "https://github.com/myronsi" },
   { icon: Linkedin, link: "https://www.linkedin.com/in/myron-ilchenko" },
-  { icon: Instagram, link: "https://www.instagram.com/myronsi_?igsh=Nm16c2hubzQwNzRy" }
+  { icon: Instagram, link: "https://www.instagram.com/myron.il_820/" }
 ];
 
 const Home: React.FC = memo(() => {
