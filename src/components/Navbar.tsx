@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 type NavPage = "Home" | "About" | "Portfolio" | "Contact";
 
@@ -84,9 +85,9 @@ const Navbar = () => {
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-500 ${
         isOpen
-          ? "bg-[#030014] opacity-100"
+          ? "bg-white dark:bg-[#030014] opacity-100 shadow-md"
           : scrolled
-          ? "bg-[#030014]/50 backdrop-blur-xl"
+          ? "bg-white/80 dark:bg-[#030014]/50 backdrop-blur-xl shadow-sm"
           : "bg-transparent"
       }`}
     >
@@ -103,7 +104,8 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:block">
-            <div className="ml-8 flex items-center space-x-8">
+            <div className="ml-8 flex items-center space-x-6">
+              <ThemeSwitcher />
               {navItems.map((item) => (
                 <a
                   key={item.label}
@@ -115,7 +117,7 @@ const Navbar = () => {
                     className={`relative z-10 transition-colors duration-300 ${
                       activeSection === item.page
                         ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-semibold"
-                        : "text-[#e2d3fd] group-hover:text-white"
+                        : "text-gray-700 dark:text-[#e2d3fd] group-hover:text-gray-900 dark:group-hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -132,10 +134,11 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeSwitcher />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`relative p-2 text-[#e2d3fd] hover:text-white transition-transform duration-300 ease-in-out transform ${
+              className={`relative p-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-transform duration-300 ease-in-out transform ${
                 isOpen ? "rotate-90 scale-125" : "rotate-0 scale-100"
               }`}
             >
@@ -150,7 +153,7 @@ const Navbar = () => {
       </div>
 
       <div
-        className={`md:hidden fixed inset-0 bg-[#030014] transition-all duration-500 ease-in-out ${
+        className={`md:hidden fixed inset-0 bg-white dark:bg-[#030014] shadow-lg transition-all duration-500 ease-in-out ${
           isOpen
             ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
             : "opacity-0 -translate-y-full scale-95 pointer-events-none"
@@ -167,7 +170,7 @@ const Navbar = () => {
                 className={`block px-4 py-3 text-lg font-medium transition-all duration-500 ease-out transform ${
                   activeSection === item.page
                     ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-semibold"
-                    : "text-[#e2d3fd] hover:text-white"
+                    : "text-gray-700 dark:text-[#e2d3fd] hover:text-gray-900 dark:hover:text-white"
                 }`}
                 style={{
                   transitionDelay: bgComplete ? `${index * 100 + 200}ms` : "0ms",

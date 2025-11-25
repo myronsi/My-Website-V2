@@ -43,16 +43,16 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text }) => {
 
 const BackgroundEffect: React.FC = () => (
   <div className="absolute inset-0 overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 blur-3xl animate-pulse" />
-    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600/10 via-transparent to-purple-600/10 blur-2xl animate-float" />
+    <div className="absolute inset-0 bg-gradient-to-r from-indigo-200/30 dark:from-indigo-600/20 to-purple-200/30 dark:to-purple-600/20 blur-3xl animate-pulse" />
+    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-200/20 dark:from-indigo-600/10 via-transparent to-purple-200/20 dark:to-purple-600/10 blur-2xl animate-float" />
   </div>
 );
 
 const IconButton: React.FC<IconButtonProps> = ({ Icon }) => (
   <div className="relative group hover:scale-110 transition-transform duration-300">
-    <div className="absolute -inset-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full blur opacity-30 group-hover:opacity-75 transition duration-300" />
-    <div className="relative p-2 sm:p-3 bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
-      <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
+    <div className="absolute -inset-2 bg-gradient-to-r from-indigo-400 dark:from-indigo-600 to-purple-400 dark:to-purple-600 rounded-full blur opacity-20 dark:opacity-30 group-hover:opacity-40 dark:group-hover:opacity-75 transition duration-300" />
+    <div className="relative p-2 sm:p-3 bg-white dark:bg-black/50 backdrop-blur-sm rounded-full border border-gray-300 dark:border-white/10">
+      <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-gray-700 dark:text-white" />
     </div>
   </div>
 );
@@ -106,7 +106,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoadingComplete }) => {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 bg-[#030014]"
+          className="fixed inset-0 bg-white dark:bg-[#030014]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit="exit"
@@ -142,14 +142,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoadingComplete }) => {
                     <span 
                       data-aos="fade-right" 
                       data-aos-delay="200" 
-                      className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent"
+                      className="inline-block px-2 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 dark:from-white dark:via-blue-100 dark:to-purple-200 bg-clip-text text-transparent"
                     >
                       Myron
                     </span>{' '}
                     <span 
                       data-aos="fade-right" 
                       data-aos-delay="400" 
-                      className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent"
+                      className="inline-block px-2 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 dark:from-white dark:via-blue-100 dark:to-purple-200 bg-clip-text text-transparent"
                     >
                       Ilchenko
                     </span>

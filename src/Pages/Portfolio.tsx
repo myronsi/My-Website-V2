@@ -42,8 +42,8 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ onClick, isShowingMore }) =
     onClick={onClick}
     className="
       px-3 py-1.5
-      text-slate-300 
-      hover:text-white 
+      text-gray-700 dark:text-slate-300 
+      hover:text-gray-900 dark:hover:text-white 
       text-sm 
       font-medium 
       transition-all 
@@ -52,12 +52,12 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ onClick, isShowingMore }) =
       flex 
       items-center 
       gap-2
-      bg-white/5 
-      hover:bg-white/10
+      bg-gray-100 dark:bg-white/5 
+      hover:bg-gray-200 dark:hover:bg-white/10
       rounded-md
       border 
-      border-white/10
-      hover:border-white/20
+      border-gray-300 dark:border-white/10
+      hover:border-gray-400 dark:hover:border-white/20
       backdrop-blur-sm
       group
       relative
@@ -152,7 +152,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <div
-      className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden"
+      className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-white dark:bg-[#030014] overflow-hidden"
       id="Portfolio"
     >
       <div className="text-center pb-10" data-aos="fade-up" data-aos-duration="1000">
@@ -162,7 +162,7 @@ const Portfolio: React.FC = () => {
         >
           Portfolio Showcase
         </h2>
-        <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
+        <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
           Explore my journey through projects, and technical expertise. Each section represents a milestone in my continuous learning path.
         </p>
       </div>
@@ -173,10 +173,13 @@ const Portfolio: React.FC = () => {
           elevation={0}
           sx={{
             bgcolor: "transparent",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: "20px",
             position: "relative",
             overflow: "hidden",
+            "@media (prefers-color-scheme: dark)": {
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+            },
             "&::before": {
               content: '""',
               position: "absolute",
@@ -185,7 +188,7 @@ const Portfolio: React.FC = () => {
               right: 0,
               bottom: 0,
               background:
-                "linear-gradient(180deg, rgba(139, 92, 246, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%)",
+                "linear-gradient(180deg, rgba(139, 92, 246, 0.02) 0%, rgba(59, 130, 246, 0.02) 100%)",
               backdropFilter: "blur(10px)",
               zIndex: 0,
             },
@@ -203,23 +206,36 @@ const Portfolio: React.FC = () => {
               "& .MuiTab-root": {
                 fontSize: { xs: "0.9rem", md: "1rem" },
                 fontWeight: "600",
-                color: "#94a3b8",
+                color: "#64748b",
                 textTransform: "none",
                 transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                 padding: "20px 0",
                 zIndex: 1,
                 margin: "8px",
                 borderRadius: "12px",
+                "@media (prefers-color-scheme: dark)": {
+                  color: "#94a3b8",
+                },
                 "&:hover": {
-                  color: "#ffffff",
-                  backgroundColor: "rgba(139, 92, 246, 0.1)",
+                  color: "#1e293b",
+                  backgroundColor: "rgba(139, 92, 246, 0.05)",
                   transform: "translateY(-2px)",
+                  "@media (prefers-color-scheme: dark)": {
+                    color: "#ffffff",
+                    backgroundColor: "rgba(139, 92, 246, 0.1)",
+                  },
                 },
                 "&.Mui-selected": {
-                  color: "#fff",
+                  color: "#1e293b",
                   background:
-                    "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))",
-                  boxShadow: "0 4px 15px -3px rgba(139, 92, 246, 0.2)",
+                    "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))",
+                  boxShadow: "0 4px 15px -3px rgba(139, 92, 246, 0.1)",
+                  "@media (prefers-color-scheme: dark)": {
+                    color: "#fff",
+                    background:
+                      "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))",
+                    boxShadow: "0 4px 15px -3px rgba(139, 92, 246, 0.2)",
+                  },
                 },
               },
               "& .MuiTabs-indicator": { height: 0 },
@@ -272,7 +288,7 @@ const Portfolio: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="text-center text-slate-300">No projects found.</p>
+                  <p className="text-center text-gray-700 dark:text-slate-300">No projects found.</p>
                 )}
               </div>
             </div>

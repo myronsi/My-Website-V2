@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 
 const ThankYouPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-white dark:bg-[#030014]">
       <div className="text-center">
         <div className="flex justify-center mb-6">
-          <CheckCircle className="w-16 h-16 text-[#6366f1]" />
+          <CheckCircle className="w-16 h-16 text-[#6366f1] dark:text-[#a855f7]" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
           Thank You!
         </h1>
-        <p className="text-gray-400 text-lg mb-8">
+        <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
           Your message has been received. I'll get back to you as soon as possible.
         </p>
         <Link

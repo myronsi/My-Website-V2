@@ -19,14 +19,14 @@ const InputField: React.FC<InputFieldProps> = ({
 
   const getInputClasses = (isTextArea = false): string => {
     const baseClasses = `
-      w-full p-4 rounded-xl bg-white/10 text-white placeholder-transparent 
+      w-full p-4 rounded-xl bg-gray-50 dark:bg-white/10 text-gray-900 dark:text-white placeholder-transparent 
       focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 
-      focus:ring-offset-[#1c1e26] transition-all duration-300 peer
+      focus:ring-offset-white dark:focus:ring-offset-[#1c1e26] transition-all duration-300 peer
     `;
 
     const hoverFocusClasses = isFocused
       ? "shadow-[0_4px_12px_rgba(99,102,241,0.4)] border-[#6366f1]"
-      : "border-white/20 hover:border-[#6366f1]";
+      : "border-gray-300 dark:border-white/20 hover:border-[#6366f1]";
 
     return `${baseClasses} ${hoverFocusClasses} ${isTextArea ? "h-52 pt-12" : "pl-12"}`;
   };

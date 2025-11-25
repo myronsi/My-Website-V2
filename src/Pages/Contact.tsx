@@ -108,7 +108,7 @@ const ContactPage: React.FC = () => {
         <p
           data-aos="fade-up"
           data-aos-duration="1100"
-          className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2"
+          className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2"
         >
           Got a question? Send me a message, and I'll get back to you soon.
         </p>
@@ -119,14 +119,14 @@ const ContactPage: React.FC = () => {
           <div
             data-aos="fade-right"
             data-aos-duration="1200"
-            className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-300 hover:shadow-[#6366f1]/10 max-w-2xl w-full"
+            className="bg-white dark:bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 dark:border-white/10 p-5 py-10 sm:p-10 transform transition-all duration-300 hover:shadow-gray-300 dark:hover:shadow-[#6366f1]/10 max-w-2xl w-full"
           >
             <div className="flex justify-between items-start mb-8">
               <div>
                 <h2 className="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
                   Get in Touch
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400">
                   Have something to discuss? Send me a message and let's talk.
                 </p>
               </div>
@@ -155,7 +155,7 @@ const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
+                  className="w-full p-4 pl-12 bg-gray-50 dark:bg-white/10 rounded-xl border border-gray-300 dark:border-white/20 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
                   required
                 />
               </div>
@@ -172,7 +172,7 @@ const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
+                  className="w-full p-4 pl-12 bg-gray-50 dark:bg-white/10 rounded-xl border border-gray-300 dark:border-white/20 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
                   required
                 />
               </div>
@@ -188,7 +188,7 @@ const ContactPage: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   disabled={isSubmitting}
-                  className="w-full resize-none p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 h-[9.9rem] disabled:opacity-50"
+                  className="w-full resize-none p-4 pl-12 bg-gray-50 dark:bg-white/10 rounded-xl border border-gray-300 dark:border-white/20 placeholder-gray-500 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 h-[9.9rem] disabled:opacity-50"
                   required
                 />
               </div>
@@ -204,7 +204,7 @@ const ContactPage: React.FC = () => {
               </button>
             </form>
     
-            <div className="mt-10 pt-6 border-t border-white/10 flex justify-center space-x-6">
+            <div className="mt-10 pt-6 border-t border-gray-200 dark:border-white/10 flex justify-center space-x-6">
               <SocialLinks />
             </div>
           </div>

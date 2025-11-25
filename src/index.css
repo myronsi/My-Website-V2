@@ -3,21 +3,25 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+	* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-family: "Poppins", serif;
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
-	scrollbar-color: rgba(99, 102, 241, 0.3) rgba(12, 5, 53, 0.356);
-}
-
-html,
+	scrollbar-color: rgba(99, 102, 241, 0.5) rgba(230, 230, 230, 0.8);
+}html,
 body {
 	overflow-x: hidden;
-	background: #030014;
+	background: #ffffff;
 	scroll-behavior: smooth !important;
+	transition: background-color 0.3s ease;
+}
+
+html.dark,
+html.dark body {
+	background: #030014;
 }
 
 @keyframes blob {
@@ -50,10 +54,10 @@ body {
   }
   
   ::-webkit-scrollbar-track {
-	background: rgba(3, 0, 20, 0.4);
+	background: rgba(230, 230, 230, 0.8);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	border: 1px solid rgba(99, 102, 241, 0.1);
+	border: 1px solid rgba(99, 102, 241, 0.2);
   }
   
   ::-webkit-scrollbar-thumb {
