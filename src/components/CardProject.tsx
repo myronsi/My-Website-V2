@@ -74,7 +74,7 @@ const CardProject: React.FC<CardProjectProps> = ({
               
               {id ? (
                 <Link
-                  to={`?page=project/${id}`}
+                  to={`/project/${id}`}
                   onClick={handleDetails}
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-900 dark:text-white/90 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 >

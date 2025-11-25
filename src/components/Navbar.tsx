@@ -26,6 +26,19 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
+    const pathToSection: { [key: string]: NavPage } = {
+      '/': 'Home',
+      '/about': 'About',
+      '/portfolio': 'Portfolio',
+      '/contact': 'Contact',
+    };
+    const currentSection = pathToSection[location.pathname];
+    if (currentSection) {
+      setActiveSection(currentSection);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       const sections = navItems
@@ -77,7 +90,13 @@ const Navbar = () => {
 
   const handleNavClick = (e: React.MouseEvent, page: NavPage) => {
     e.preventDefault();
-    navigate(`?page=${page}`);
+    const pathMap: { [key in NavPage]: string } = {
+      Home: '/',
+      About: '/about',
+      Portfolio: '/portfolio',
+      Contact: '/contact',
+    };
+    navigate(pathMap[page]);
     setIsOpen(false);
   };
 
@@ -95,7 +114,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
             <a
-              href="?page=Home"
+              href="/"
               onClick={(e) => handleNavClick(e, "Home")}
               className="text-xl font-bold bg-gradient-to-r from-[#a855f7] to-[#6366f1] bg-clip-text text-transparent"
             >
@@ -106,13 +125,20 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-8 flex items-center space-x-6">
               <ThemeSwitcher />
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={`?page=${item.page}`}
-                  onClick={(e) => handleNavClick(e, item.page)}
-                  className="group relative px-1 py-2 text-sm font-medium"
-                >
+              {navItems.map((item) => {
+                const pathMap: { [key in NavPage]: string } = {
+                  Home: '/',
+                  About: '/about',
+                  Portfolio: '/portfolio',
+                  Contact: '/contact',
+                };
+                return (
+                  <a
+                    key={item.label}
+                    href={pathMap[item.page]}
+                    onClick={(e) => handleNavClick(e, item.page)}
+                    className="group relative px-1 py-2 text-sm font-medium"
+                  >
                   <span
                     className={`relative z-10 transition-colors duration-300 ${
                       activeSection === item.page
@@ -130,7 +156,8 @@ const Navbar = () => {
                     }`}
                   />
                 </a>
-              ))}
+              );
+              })}
             </div>
           </div>
 
@@ -162,27 +189,35 @@ const Navbar = () => {
       >
         <div className="flex flex-col h-full">
           <div className="px-4 py-6 space-y-4 flex-1">
-            {navItems.map((item, index) => (
-              <a
-                key={item.label}
-                href={`?page=${item.page}`}
-                onClick={(e) => handleNavClick(e, item.page)}
-                className={`block px-4 py-3 text-lg font-medium transition-all duration-500 ease-out transform ${
+            {navItems.map((item, index) => {
+              const pathMap: { [key in NavPage]: string } = {
+                Home: '/',
+                About: '/about',
+                Portfolio: '/portfolio',
+                Contact: '/contact',
+              };
+              return (
+                <a
+                  key={item.label}
+                  href={pathMap[item.page]}
+                  onClick={(e) => handleNavClick(e, item.page)}
+                  className={`block px-4 py-3 text-lg font-medium transition-all duration-500 ease-out transform ${
                   activeSection === item.page
                     ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-semibold"
                     : "text-gray-700 dark:text-[#e2d3fd] hover:text-gray-900 dark:hover:text-white"
                 }`}
-                style={{
-                  transitionDelay: bgComplete ? `${index * 100 + 200}ms` : "0ms",
-                  transform: bgComplete
-                    ? "translateX(0) translateY(0)"
-                    : "translateX(50px) translateY(-10px)",
-                  opacity: bgComplete ? 1 : 0,
-                }}
-              >
-                {item.label}
-              </a>
-            ))}
+                  style={{
+                    transitionDelay: bgComplete ? `${index * 100 + 200}ms` : "0ms",
+                    transform: bgComplete
+                      ? "translateX(0) translateY(0)"
+                      : "translateX(50px) translateY(-10px)",
+                    opacity: bgComplete ? 1 : 0,
+                  }}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

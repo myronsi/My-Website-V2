@@ -22,10 +22,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ showWelcome, setShowWelcome }
 
   useEffect(() => {
     if (!showWelcome) {
-      const params = new URLSearchParams(location.search);
-      const page = params.get("page");
-      if (page && !page.startsWith("project/")) {
-        const section = document.getElementById(page);
+      const pathToSection: { [key: string]: string } = {
+        '/': 'Home',
+        '/about': 'About',
+        '/portfolio': 'Portfolio',
+        '/contact': 'Contact',
+      };
+      
+      const sectionId = pathToSection[location.pathname];
+      if (sectionId) {
+        const section = document.getElementById(sectionId);
         if (section) {
           const navbarHeight = 80;
           const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
@@ -37,7 +43,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showWelcome, setShowWelcome }
         }
       }
     }
-  }, [showWelcome, location.search]);
+  }, [showWelcome, location.pathname]);
 
   const currentYear = new Date().getFullYear();
 
@@ -101,53 +107,18 @@ const NotFound: React.FC = () => {
   );
 };
 
-interface AppRoutesProps {
-  showWelcome: boolean;
-  setShowWelcome: Dispatch<SetStateAction<boolean>>;
-}
-
-const AppRoutes: React.FC<AppRoutesProps> = ({ showWelcome, setShowWelcome }) => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-
-  for (const key of params.keys()) {
-    if (key !== "page") {
-      return <NotFound />;
-    }
-  }
-
-  const page = params.get("page");
-
-  if (page && page.startsWith("project/")) {
-    const id = page.split("/")[1];
-    return <ProjectDetails id={id} />;
-  }
-
-  const allowedPages = ["Home", "About", "Portfolio", "Contact"];
-
-  if (page && !allowedPages.includes(page)) {
-    return <NotFound />;
-  }
-
-  if (location.pathname !== "/") {
-    return <NotFound />;
-  }
-
-  return <LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />;
-};
-
 function App() {
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="*"
-          element={
-            <AppRoutes showWelcome={showWelcome} setShowWelcome={setShowWelcome} />
-          }
-        />
+        <Route path="/" element={<LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />} />
+        <Route path="/about" element={<LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />} />
+        <Route path="/portfolio" element={<LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />} />
+        <Route path="/contact" element={<LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />} />
+        <Route path="/project/:id" element={<ProjectDetails />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

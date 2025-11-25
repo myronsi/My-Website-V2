@@ -142,7 +142,13 @@ const Home: React.FC = memo(() => {
 
   const handleNavClick = (e: MouseEvent<HTMLButtonElement>, page: string) => {
     e.preventDefault();
-    navigate(`?page=${page}`);
+    const pathMap: { [key: string]: string } = {
+      Home: '/',
+      About: '/about',
+      Portfolio: '/portfolio',
+      Contact: '/contact',
+    };
+    navigate(pathMap[page]);
     setTimeout(() => {
       const section = document.getElementById(page);
       if (section) {
@@ -154,17 +160,22 @@ const Home: React.FC = memo(() => {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const page = params.get("page");
-    if (page) {
-      const section = document.getElementById(page);
+    const pathToSection: { [key: string]: string } = {
+      '/': 'Home',
+      '/about': 'About',
+      '/portfolio': 'Portfolio',
+      '/contact': 'Contact',
+    };
+    const sectionId = pathToSection[location.pathname];
+    if (sectionId) {
+      const section = document.getElementById(sectionId);
       if (section) {
         const yOffset = -80;
         const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
     }
-  }, [location.search]);
+  }, [location.pathname]);
 
   const lottieOptions: {
     src: string;

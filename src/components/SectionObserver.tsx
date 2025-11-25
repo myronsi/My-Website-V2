@@ -18,10 +18,17 @@ const SectionObserver: React.FC<SectionObserverProps> = ({
     const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting) {
-          const searchParams = new URLSearchParams(window.location.search);
-          searchParams.set("page", entry.target.id);
-          const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-          window.history.replaceState(null, '', newUrl);
+          const sectionToPath: { [key: string]: string } = {
+            'Home': '/',
+            'About': '/about',
+            'Portfolio': '/portfolio',
+            'Contact': '/contact',
+          };
+          
+          const newPath = sectionToPath[entry.target.id];
+          if (newPath && window.location.pathname !== newPath) {
+            window.history.replaceState(null, '', newPath);
+          }
         }
       });
     };
