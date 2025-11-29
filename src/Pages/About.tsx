@@ -3,7 +3,7 @@ import { FileText, Code, Globe, ArrowUpRight } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { projects } from "../data/projectsData";
+import { useState } from "react";
 
 interface StatCardProps {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -115,8 +115,9 @@ const AboutPage: React.FC = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { totalProjects, YearExperience } = useMemo(() => {
-    const totalProjects = projects.length;
+  const [totalProjects, setTotalProjects] = useState<number>(0);
+
+  const YearExperience = useMemo(() => {
     const startDate = new Date("2023-01-02");
     const today = new Date();
     const experience =
@@ -125,7 +126,7 @@ const AboutPage: React.FC = memo(() => {
       (today < new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate())
         ? 1
         : 0);
-    return { totalProjects, YearExperience: experience };
+    return experience;
   }, []);
 
   useEffect(() => {
@@ -139,6 +140,21 @@ const AboutPage: React.FC = memo(() => {
       resizeTimer = setTimeout(initAOS, 250);
     };
     window.addEventListener("resize", handleResize);
+    const fetchProjectsCount = async () => {
+      try {
+        const res = await fetch("https://vcmsadm.viserix.com/api/projects.php", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "omit",
+        });
+        if (!res.ok) return;
+        const payload = await res.json();
+        const items = payload?.data ?? [];
+        if (Array.isArray(items)) setTotalProjects(items.length);
+      } catch (e) {
+      }
+    };
+    fetchProjectsCount();
     return () => {
       window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimer);

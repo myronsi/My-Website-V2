@@ -11,7 +11,7 @@ import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Code, Boxes } from "lucide-react";
-import { projects } from "../data/projectsData";
+// Projects are loaded from remote API at runtime.
 
 interface ToggleButtonProps {
   onClick: () => void;
@@ -28,6 +28,14 @@ interface TabPanelProps {
 interface TechStackItem {
   icon: string;
   language: string;
+}
+
+interface ProjectItem {
+  id?: string;
+  Img?: string;
+  Title?: string;
+  Description?: string;
+  Link?: string;
 }
 
 function a11yProps(index: number) {
@@ -111,23 +119,7 @@ function TabPanel({ children, value, index, ...other }: TabPanelProps) {
   );
 }
 
-const techStacks: TechStackItem[] = [
-  { icon: "/icons/c.svg", language: "C" },
-  { icon: "/icons/cpp.svg", language: "C++" },
-  { icon: "/icons/python.svg", language: "Python" },
-  { icon: "/icons/java.svg", language: "Java" },
-  { icon: "/icons/html.svg", language: "HTML" },
-  { icon: "/icons/css.svg", language: "CSS" },
-  { icon: "/icons/javascript.svg", language: "JavaScript" },
-  { icon: "/icons/git.svg", language: "Git" },
-  { icon: "/icons/archlinux.svg", language: "Arch Linux" },
-  { icon: "/icons/visual-studio-code.svg", language: "VS Code" },
-  { icon: "/icons/tailwind.svg", language: "Tailwind CSS" },
-  { icon: "/icons/reactjs.svg", language: "ReactJS" },
-  { icon: "/icons/typescript.svg", language: "TypeScript" },
-  { icon: "/icons/npm.svg", language: "NPM" },
-  { icon: "/icons/mysql.svg", language: "MySQL" },
-];
+// Tech stack items will be loaded from the remote API at runtime.
 
 const Portfolio: React.FC = () => {
   const theme = useTheme();
@@ -136,8 +128,85 @@ const Portfolio: React.FC = () => {
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
+  const [techStacks, setTechStacks] = useState<TechStackItem[]>([]);
+  const [loadingTech, setLoadingTech] = useState<boolean>(true);
+  const [techError, setTechError] = useState<string | null>(null);
+  const [projectsList, setProjectsList] = useState<ProjectItem[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState<boolean>(true);
+  const [projectsError, setProjectsError] = useState<string | null>(null);
+
   useEffect(() => {
     AOS.init({ once: false });
+
+    const fetchTechStack = async () => {
+      setLoadingTech(true);
+      setTechError(null);
+      try {
+        const res = await fetch('https://vcmsadm.viserix.com/api/tech-stack.php', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          // include credentials if the API needs cookies; adjust as necessary
+          credentials: 'omit',
+        });
+
+        if (!res.ok) {
+          throw new Error(`Network response was not ok (${res.status})`);
+        }
+
+        const payload = await res.json();
+        const items = payload?.data ?? [];
+
+        const mapped: TechStackItem[] = items.map((it: any) => ({
+          icon: it.icon_image ?? it.icon ?? '',
+          language: it.tech_name ?? it.language ?? '',
+        }));
+
+        setTechStacks(mapped);
+      } catch (err: any) {
+        setTechError(err?.message ?? 'Failed to load tech stack');
+      } finally {
+        setLoadingTech(false);
+      }
+    };
+
+    fetchTechStack();
+  }, []);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoadingProjects(true);
+      setProjectsError(null);
+      try {
+        const res = await fetch('https://vcmsadm.viserix.com/api/projects.php', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'omit',
+        });
+
+        if (!res.ok) {
+          throw new Error(`Network response was not ok (${res.status})`);
+        }
+
+        const payload = await res.json();
+        const items = payload?.data ?? [];
+
+        const mapped: ProjectItem[] = items.map((it: any) => ({
+          id: it.id,
+          Img: it.image ?? it.Image ?? it.Img ?? '',
+          Title: it.title ?? it.Title ?? '',
+          Description: it.description ?? it.Description ?? '',
+          Link: it.link ?? it.Link ?? '',
+        }));
+
+        setProjectsList(mapped);
+      } catch (err: any) {
+        setProjectsError(err?.message ?? 'Failed to load projects');
+      } finally {
+        setLoadingProjects(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -148,7 +217,7 @@ const Portfolio: React.FC = () => {
     setShowAllProjects((prev) => !prev);
   }, []);
 
-  const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
+  const displayedProjects = showAllProjects ? projectsList : projectsList.slice(0, initialItems);
 
   return (
     <div
@@ -243,13 +312,13 @@ const Portfolio: React.FC = () => {
             }}
           >
             <Tab
-              icon={<Code className="mb-2 w-5 h-5 transition-all duration-300" />}
-              label="Projects"
+              icon={<Code className="mb-2 w-5 h-5 transition-all duration-300 text-gray-700 dark:text-slate-300" />}
+              label={<span className="text-gray-700 dark:text-slate-300">Projects</span>}
               {...a11yProps(0)}
             />
             <Tab
-              icon={<Boxes className="mb-2 w-5 h-5 transition-all duration-300" />}
-              label="Tech Stack"
+              icon={<Boxes className="mb-2 w-5 h-5 transition-all duration-300 text-gray-700 dark:text-slate-300" />}
+              label={<span className="text-gray-700 dark:text-slate-300">Tech Stack</span>}
               {...a11yProps(1)}
             />
           </Tabs>
@@ -292,7 +361,7 @@ const Portfolio: React.FC = () => {
                 )}
               </div>
             </div>
-            {projects.length > initialItems && (
+            {projectsList.length > initialItems && (
               <div className="mt-6 w-full flex justify-start">
                 <ToggleButton onClick={toggleShowMore} isShowingMore={showAllProjects} />
               </div>
@@ -302,23 +371,37 @@ const Portfolio: React.FC = () => {
           <TabPanel value={value} index={1} dir={theme.direction}>
             <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
-                {techStacks.map((stack, index) => (
-                  <div
-                    key={index}
-                    data-aos={
-                      index % 3 === 0
-                        ? "fade-up-right"
-                        : index % 3 === 1
-                        ? "fade-up"
-                        : "fade-up-left"
-                    }
-                    data-aos-duration={
-                      index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
-                    }
-                  >
-                    <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} />
+                {loadingTech ? (
+                  <div className="col-span-full text-center">
+                    <p className="text-gray-700 dark:text-slate-300">Loading tech stack...</p>
                   </div>
-                ))}
+                ) : techError ? (
+                  <div className="col-span-full text-center">
+                    <p className="text-red-500">{techError}</p>
+                  </div>
+                ) : techStacks.length === 0 ? (
+                  <div className="col-span-full text-center">
+                    <p className="text-gray-700 dark:text-slate-300">No tech stack items found.</p>
+                  </div>
+                ) : (
+                  techStacks.map((stack, index) => (
+                    <div
+                      key={index}
+                      data-aos={
+                        index % 3 === 0
+                          ? "fade-up-right"
+                          : index % 3 === 1
+                          ? "fade-up"
+                          : "fade-up-left"
+                      }
+                      data-aos-duration={
+                        index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
+                      }
+                    >
+                      <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} />
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </TabPanel>

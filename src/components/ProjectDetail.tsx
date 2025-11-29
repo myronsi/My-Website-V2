@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { projects } from "../data/projectsData";
+// Projects are fetched from the remote API at runtime.
 import {
   ArrowLeft,
   ExternalLink,
@@ -42,7 +42,7 @@ interface ProjectDetailsProps {
 }
 
 interface Project {
-  id: number;
+  id?: string | number;
   Title: string;
   Description: string;
   Img: string;
@@ -130,7 +130,7 @@ const ProjectStats: React.FC<ProjectStatsProps> = ({ project }) => {
 };
 
 const handleGithubClick = (githubLink: string): boolean => {
-  if (githubLink === "Private") {
+  if (githubLink === "private") {
     const isDark = document.documentElement.classList.contains('dark');
     Swal.fire({
       icon: "info",
@@ -153,22 +153,70 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id: propId }) => {
   const [project, setProject] = useState<Project | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    const selectedProject = projects.find((p) => String(p.id) === id);
+    let cancelled = false;
 
-    if (selectedProject) {
-      const enhancedProject: Project = {
-        ...selectedProject,
-        Features: selectedProject.Features || [],
-        TechStack: selectedProject.TechStack || [],
-        Github: selectedProject.Github || "https://github.com/myronsi",
-      };
-      setProject(enhancedProject);
-    } else {
-      setNotFound(true);
-    }
+    const fetchProject = async () => {
+      setNotFound(false);
+      setProject(null);
+      if (!id) {
+        setNotFound(true);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `https://vcmsadm.viserix.com/api/projects.php?id=${encodeURIComponent(String(id))}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "omit",
+          }
+        );
+
+        if (!res.ok) {
+          if (res.status === 404) {
+            setNotFound(true);
+            return;
+          }
+          throw new Error(`Network response was not ok (${res.status})`);
+        }
+
+        const payload = await res.json();
+        const data = payload?.data;
+
+        if (!data) {
+          setNotFound(true);
+          return;
+        }
+
+        const mapped: Project = {
+          id: data.id ?? data.ID,
+          Title: data.title ?? data.Title ?? "",
+          Description: data.description ?? data.Description ?? "",
+          Img: data.image ?? data.Image ?? data.Img ?? "",
+          Link: data.link ?? data.Link ?? "",
+          Github: data.github ?? data.Github ?? "https://github.com/myronsi",
+          TechStack: data.tech_stack ?? data.TechStack ?? [],
+          Features: data.features ?? data.Features ?? [],
+          Mention: data.mention ?? data.Mention ?? null,
+        };
+
+        if (!cancelled) {
+          setProject(mapped);
+        }
+      } catch (err) {
+        console.error(err);
+        setNotFound(true);
+      }
+    };
+
+    fetchProject();
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   if (notFound) {
@@ -253,8 +301,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id: propId }) => {
                   className="group relative inline-flex items-center space-x-1.5 md:space-x-2 px-4 md:px-8 py-2.5 md:py-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 hover:from-blue-600/20 hover:to-purple-600/20 text-blue-300 rounded-xl transition-all duration-300 border border-blue-500/20 hover:border-blue-500/40 backdrop-blur-xl overflow-hidden text-sm md:text-base"
                 >
                   <div className="absolute inset-0 translate-y-[100%] bg-gradient-to-r from-blue-600/10 to-purple-600/10 transition-transform duration-300 group-hover:translate-y-[0%]" />
-                  <ExternalLink className="relative w-4 h-4 md:w-5 md:h-5 transition-transform" />
-                  <span className="relative font-medium">View</span>
+                  <ExternalLink className="relative w-4 h-4 md:w-5 md:h-5 transition-transform text-blue-700 dark:text-blue-300" />
+                  <span className="relative font-medium text-blue-700 dark:text-blue-300">View</span>
                 </a>
 
                 <a
@@ -265,8 +313,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id: propId }) => {
                   onClick={(e) => !handleGithubClick(project.Github) && e.preventDefault()}
                 >
                   <div className="absolute inset-0 translate-y-[100%] bg-gradient-to-r from-purple-600/10 to-pink-600/10 transition-transform duration-300 group-hover:translate-y-[0%]" />
-                  <Github className="relative w-4 h-4 md:w-5 md:h-5 transition-transform" />
-                  <span className="relative font-medium">Github</span>
+                  <Github className="relative w-4 h-4 md:w-5 md:h-5 transition-transform text-blue-700 dark:text-blue-300" />
+                  <span className="relative font-medium text-blue-700 dark:text-blue-300">Github</span>
                 </a>
 
                 {project.Mention && (
@@ -277,8 +325,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ id: propId }) => {
                     className="group relative inline-flex items-center space-x-1.5 md:space-x-2 px-4 md:px-8 py-2.5 md:py-4 bg-gradient-to-r from-purple-600/10 to-pink-600/10 hover:from-purple-600/20 hover:to-pink-600/20 text-purple-300 rounded-xl transition-all duration-300 border border-purple-500/20 hover:border-purple-500/40 backdrop-blur-xl overflow-hidden text-sm md:text-base"
                   >
                     <div className="absolute inset-0 translate-y-[100%] bg-gradient-to-r from-blue-600/10 to-purple-600/10 transition-transform duration-300 group-hover:translate-y-[0%]" />
-                    <User className="relative w-4 h-4 md:w-5 md:h-5 transition-transform" />
-                    <span className="relative font-medium">My Mention</span>
+                    <User className="relative w-4 h-4 md:w-5 md:h-5 transition-transform text-blue-700 dark:text-blue-300" />
+                    <span className="relative font-medium text-blue-700 dark:text-blue-300">My Mention</span>
                   </a>
                 )}
               </div>
